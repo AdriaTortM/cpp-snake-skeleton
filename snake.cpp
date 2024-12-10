@@ -54,21 +54,53 @@ std::vector<int> backgroundSetup(const int &nx, const int &ny)
 void add_snake(const std::vector<std::pair<int, int>> &snake, std::vector<int> &bg, int nx, int ny)
 {
   // 👉️ Your code here 👈️
+  for(int i = 0 ; i<snake.size(); i++){
+    int colonne = snake[i].first;
+    int ligne = snake[i].second;
+    bg[ligne*nx + colonne] = 3;
+  }
 }
 
 void remove_snake(const std::vector<std::pair<int, int>> &snake, std::vector<int> &bg, int nx, int ny)
 {
   // 👉️ Your code here 👈️
+  for(int i= 0; i<snake.size(); i++){
+    int colonne = snake[i].first;
+    int ligne = snake[i].second;
+    bg[ligne*nx + colonne] = 0;
+  }
 }
 
 std::array<int, 2> snake_movement(char key)
 {
+  std::array<int, 2> dep = {0,0};
   // 👉️ Your code here 👈️
+  if(key == 'z'){
+    dep = {0, 1};
+  }
+  else if(key == 'q'){
+    dep = {-1, 0};
+  }
+  else if(key == 's'){
+    dep = {0, -1};
+  }
+  else if(key == 'd'){
+    dep = {1, 0};
+  }
+  return dep;
 }
 
-bool verifyBorder(const std::vector<std::pair<int, int>> &snake, int nx, int ny)
+bool verifyBorder(const std::vector<std::pair<int, int>>& snake, int nx, int ny)
 {
   // 👉️ Your code here 👈️
+  int colonne = snake[0].first; 
+  int ligne = snake[0].second;
+  if(ligne == 0 || ligne == ny || colonne == 0 || colonne == nx){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
 std::vector<std::pair<int, int>> setupSnake(int snake_len)
@@ -86,6 +118,16 @@ std::vector<std::pair<int, int>> setupSnake(int snake_len)
 void update_snake_coordinates(std::vector<std::pair<int, int>> &snake, bool eat, std::array<int, 2> dxdy)
 {
   // 👉️ Your code here 👈️
+  int dx = dxdy[0];
+  int dy = dxdy[1];
+  int colonne = snake[0].first; 
+  int ligne = snake[0].second;
+
+  if(eat == false){
+    snake.pop_back();
+  }
+  std::pair<int,int> nouv = {colonne + dx, ligne +dy};
+  snake.insert(snake.begin(),nouv);
 }
 
 void startGame(const int &lap, const int &nx, const int &ny, std::vector<std::pair<int, int>> &snake, std::vector<int> &bg)
